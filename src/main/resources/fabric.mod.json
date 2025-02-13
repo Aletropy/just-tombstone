@@ -1,0 +1,57 @@
+{
+	"schemaVersion": 1,
+	"id": "just-tombstone",
+	"version": "${version}",
+	"name": "Just Tombstone",
+	"description": "Just adds a simple and functional tombstone, enjoy!",
+	"authors": [
+		"Aletropy"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/Aletropy/just-tombstone"
+	},
+	"license": "GPL-3.0",
+	"icon": "assets/just-tombstone/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			{
+				"value": "com.aletropy.tombstone.JustTombstone",
+				"adapter": "kotlin"
+			}
+		],
+		"client": [
+			{
+				"value": "com.aletropy.tombstone.JustTombstoneClient",
+				"adapter": "kotlin"
+			}
+		],
+		"fabric-datagen": [
+			{
+				"value": "com.aletropy.tombstone.JustTombstoneDataGenerator",
+				"adapter": "kotlin"
+			}
+		]
+	},
+	"mixins": [
+		{
+			"config": "just-tombstone.mixins.json",
+			"environment": "*"
+		},
+		{
+			"config": "just-tombstone.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"fabric-language-kotlin": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
