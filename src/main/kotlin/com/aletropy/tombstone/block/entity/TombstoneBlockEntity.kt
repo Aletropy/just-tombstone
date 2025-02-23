@@ -1,6 +1,8 @@
 package com.aletropy.tombstone.block.entity
 
+import com.aletropy.tombstone.support.trinkets.TrinketsHelper
 import com.google.common.collect.ImmutableList
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.ItemEntity
@@ -9,18 +11,15 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
-import net.minecraft.nbt.NbtElement
 import net.minecraft.nbt.NbtList
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
-import net.minecraft.text.Text
 import net.minecraft.util.TypeFilter
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
-import java.util.UUID
 
 class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 	ModBlockEntities.TOMBSTONE, pos, state
@@ -58,6 +57,8 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 	private var armor = DefaultedList.ofSize(4, ItemStack.EMPTY)
 	private var offHand = DefaultedList.ofSize(1, ItemStack.EMPTY)
 
+	private var trinkets = NbtCompound()
+
 	private var experienceProgress = 0.0f
 	private var experienceLevel = 0
 
@@ -81,6 +82,10 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 
 		experienceProgress = player.experienceProgress
 		experienceLevel = player.experienceLevel
+
+		if(FabricLoader.getInstance().isModLoaded("trinkets")) {
+			trinkets = TrinketsHelper().getAndClearTrinkets(player)
+		}
 
 		player.inventory.clear()
 		player.experienceLevel = 0
@@ -126,6 +131,10 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 					world?.spawnEntity(ItemEntity(world, player.pos.x, player.pos.y, player.pos.z, stack))
 			}
 
+		if(FabricLoader.getInstance().isModLoaded("trinkets")) {
+			TrinketsHelper().setTrinketsFromNbt(trinkets, player)
+		}
+
 		player.experienceLevel = experienceLevel
 		player.experienceProgress = experienceProgress
 
@@ -157,6 +166,8 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 		inventoriesList.add(2, offHandInvNbt)
 
 		nbt.put("inventory", inventoriesList)
+		nbt.put("trinkets", trinkets)
+
 		nbt.putFloat("experienceProgress", experienceProgress)
 		nbt.putInt("experienceLevel", experienceLevel)
 
@@ -175,6 +186,8 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 
 		experienceProgress = nbt.getFloat("experienceProgress")
 		experienceLevel = nbt.getInt("experienceLevel")
+
+		trinkets = nbt.getCompound("trinkets")
 
 		owner = nbt.getString("owner")
 

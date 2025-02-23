@@ -4,10 +4,8 @@ import com.aletropy.tombstone.block.ModBlocks
 import com.aletropy.tombstone.block.entity.ModBlockEntities
 import com.aletropy.tombstone.event.player.BeforePlayerDieCallback
 import com.aletropy.tombstone.item.ModItems
+import dev.emi.trinkets.api.TrinketsApi
 import net.fabricmc.api.ModInitializer
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents
-import net.minecraft.item.ItemStack
-import net.minecraft.text.Text
 import org.slf4j.LoggerFactory
 
 object JustTombstone : ModInitializer
@@ -18,6 +16,8 @@ object JustTombstone : ModInitializer
 	override fun onInitialize()
 	{
 		ModItems.registerItems()
+
+		
 
 		ModBlocks.registerBlocks()
 		ModBlockEntities.registerBlockEntities()
