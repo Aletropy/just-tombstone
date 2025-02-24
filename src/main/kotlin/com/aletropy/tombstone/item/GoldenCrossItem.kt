@@ -17,9 +17,12 @@ class GoldenCrossItem(settings: Settings) : Item(settings)
 		if (world.isClient) return super.finishUsing(stack, world, user)
 		if (user !is PlayerEntity) return super.finishUsing(stack, world, user)
 
-		val lastDeathPos = user.lastDeathPos.getOrNull()?.pos ?: return super.finishUsing(stack, world, user)
+		val baseLastDeathPos = user.lastDeathPos.getOrNull()?.pos ?: return super.finishUsing(stack, world, user)
 
-		user.teleport(lastDeathPos.x.toDouble()+0.5, lastDeathPos.y.toDouble() + 1.0, lastDeathPos.z.toDouble() + 0.5, true)
+		val lastDeathPos = baseLastDeathPos.toCenterPos().add(0.0, 0.5, 0.0)
+
+		user.world.getWorldChunk(baseLastDeathPos).setLoadedToWorld(true)
+		user.teleport(lastDeathPos.x, lastDeathPos.y, lastDeathPos.z, true)
 
 		return ItemStack.EMPTY
 	}

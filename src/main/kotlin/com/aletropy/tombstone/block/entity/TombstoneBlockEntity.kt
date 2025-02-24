@@ -29,26 +29,7 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 	{
 		fun tick(world: World, pos: BlockPos, state: BlockState, blockEntity: TombstoneBlockEntity)
 		{
-			val radius = 12.0
 
-			world.getEntitiesByType(
-				TypeFilter.instanceOf(MobEntity::class.java), Box.of(
-					Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()), radius, radius, radius
-				)
-			) { true }.forEach {
-				it.velocityDirty = true
-
-				val currentPos = pos.toCenterPos()
-				val entityPos = it.pos
-
-				val knockbackDir = entityPos.subtract(currentPos).normalize()
-
-				it.velocity = knockbackDir.multiply(1.2)
-
-				world.playSound(
-					entityPos.x, entityPos.y, entityPos.z, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 1.0f, true
-				)
-			}
 		}
 	}
 
