@@ -138,6 +138,8 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 		player.experienceLevel = experienceLevel
 		player.experienceProgress = experienceProgress
 
+		player.addExperience(1)
+
 		world?.playSound(null, player.blockPos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, 1.0f)
 
 		return true
