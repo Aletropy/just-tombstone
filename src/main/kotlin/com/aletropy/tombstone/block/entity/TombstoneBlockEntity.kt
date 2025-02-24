@@ -53,6 +53,7 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 	}
 
 	var owner = ""
+	private var canRemove = false
 	private var main = DefaultedList.ofSize(36, ItemStack.EMPTY)
 	private var armor = DefaultedList.ofSize(4, ItemStack.EMPTY)
 	private var offHand = DefaultedList.ofSize(1, ItemStack.EMPTY)
@@ -61,6 +62,8 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 
 	private var experienceProgress = 0.0f
 	private var experienceLevel = 0
+
+	fun canBeRemoved(): Boolean { return canRemove }
 
 	fun initialize(player : PlayerEntity)
 	{
@@ -139,8 +142,9 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 		player.experienceProgress = experienceProgress
 
 		player.addExperience(1)
-
 		world?.playSound(null, player.blockPos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, 1.0f)
+
+		canRemove = true
 
 		return true
 	}
@@ -174,6 +178,7 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 		nbt.putInt("experienceLevel", experienceLevel)
 
 		nbt.putString("owner", owner)
+		nbt.putBoolean("canRemove", canRemove)
 
 		markDirty()
 	}
@@ -192,6 +197,7 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 		trinkets = nbt.getCompound("trinkets")
 
 		owner = nbt.getString("owner")
+		canRemove = nbt.getBoolean("canRemove")
 
 		markDirty()
 	}

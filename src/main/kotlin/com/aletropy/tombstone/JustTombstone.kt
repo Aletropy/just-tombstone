@@ -17,8 +17,6 @@ object JustTombstone : ModInitializer
 	{
 		ModItems.registerItems()
 
-		
-
 		ModBlocks.registerBlocks()
 		ModBlockEntities.registerBlockEntities()
 

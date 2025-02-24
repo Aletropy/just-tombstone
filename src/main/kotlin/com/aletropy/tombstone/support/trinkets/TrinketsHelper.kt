@@ -25,16 +25,16 @@ class TrinketsHelper
 	{
 		val component = TrinketsApi.getTrinketComponent(player).getOrNull() ?: return
 
-		val retreiveItems = mutableListOf<ItemStack>()
+		val oldItems = mutableListOf<ItemStack>()
 
 		component.forEach { _, stack ->
 			if(stack.isEmpty) return@forEach
-			retreiveItems.add(stack)
+			oldItems.add(stack)
 		}
 
 		component.readFromNbt(nbt)
 
-		for(item in retreiveItems)
+		for(item in oldItems)
 			player.giveItemStack(item)
 	}
 }

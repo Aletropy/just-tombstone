@@ -21,11 +21,15 @@ import kotlin.jvm.optionals.getOrNull
 
 class TombstoneBlock(settings: Settings) : BlockWithEntity(settings)
 {
+	companion object
+	{
+		const val PICKUP : Int = 1 shl 10
+	}
+
 	@Deprecated(
 		"Deprecated in Java",
 		ReplaceWith("super.getOutlineShape(state, world, pos, context)", "net.minecraft.block.Block")
 	)
-
 	override fun onUse(
 		state: BlockState,
 		world: World,
@@ -41,7 +45,7 @@ class TombstoneBlock(settings: Settings) : BlockWithEntity(settings)
 
 		if(blockEntity.tryRetrieve(player))
 		{
-			world.removeBlock(pos, false)
+			world.removeBlock(pos, true)
 		}
 
 		return ActionResult.SUCCESS
