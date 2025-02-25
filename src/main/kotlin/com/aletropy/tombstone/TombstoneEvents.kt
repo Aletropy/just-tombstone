@@ -124,6 +124,6 @@ object TombstoneEvents
 		val block = world.getBlockState(pos)
 		return block.isAir
 				&& world.getBlockState(pos.up()).isAir
-				&& world.getBlockState(pos.down()).isOpaque
+				&& world.getBlockState(pos.down()).isSolid
 	}
 }
