@@ -10,6 +10,7 @@ import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.GlobalPos
 import net.minecraft.world.World
 import net.minecraft.world.tick.TickPriority
 import kotlin.jvm.optionals.getOrNull
@@ -28,6 +29,12 @@ object TombstoneEvents
 		val pos = if(damageSource == player.damageSources.outOfWorld())
 			getVoidAndCreate(player)
 		else getSafeOrCreate(player)
+
+		val deathState = DeathStateSL.getPlayerState(player)
+
+		deathState.lastTombPosition = GlobalPos.create(
+			player.world.registryKey, pos
+		)
 
 		if (world.setBlockState(pos, ModBlocks.TOMBSTONE.defaultState, Block.NOTIFY_ALL))
 		{

@@ -11,5 +11,6 @@ class BrazilianLangProvider(output : FabricDataOutput) : FabricLanguageProvider(
 	{
 		translationBuilder.add(ModBlocks.TOMBSTONE, "Tumba")
 		translationBuilder.add(ModItems.GOLDEN_CROSS, "Cruz Dourada")
+	translationBuilder.add(ModItems.CREATIVE_CROSS, "Cruz Instantânea")
 	}
 }

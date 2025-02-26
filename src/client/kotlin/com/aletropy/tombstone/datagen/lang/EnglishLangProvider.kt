@@ -11,5 +11,6 @@ class EnglishLangProvider(output : FabricDataOutput) : FabricLanguageProvider(ou
 	{
 		translationBuilder.add(ModBlocks.TOMBSTONE, "Tombstone")
 		translationBuilder.add(ModItems.GOLDEN_CROSS, "Golden Cross")
+		translationBuilder.add(ModItems.CREATIVE_CROSS, "Instant Cross")
 	}
 }

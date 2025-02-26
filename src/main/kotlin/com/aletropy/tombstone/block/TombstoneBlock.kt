@@ -46,6 +46,7 @@ class TombstoneBlock(settings: Settings) : BlockWithEntity(settings)
 		if(blockEntity.tryRetrieve(player))
 		{
 			world.removeBlock(pos, true)
+			world.chunkManager.setChunkForced(world.getChunk(pos).pos, false)
 		}
 
 		return ActionResult.SUCCESS

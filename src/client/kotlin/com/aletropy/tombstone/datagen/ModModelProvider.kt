@@ -20,6 +20,7 @@ class ModModelProvider(output : FabricDataOutput) : FabricModelProvider(output)
 	override fun generateItemModels(itemModelGenerator: ItemModelGenerator)
 	{
 		itemModelGenerator.register(ModItems.GOLDEN_CROSS, Models.GENERATED)
+		itemModelGenerator.register(ModItems.CREATIVE_CROSS, ModItems.GOLDEN_CROSS, Models.GENERATED)
 	}
 
 }

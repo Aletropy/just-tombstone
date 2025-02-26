@@ -1,5 +1,6 @@
 package com.aletropy.tombstone.block.entity
 
+import com.aletropy.tombstone.DeathStateSL
 import com.aletropy.tombstone.support.trinkets.TrinketsHelper
 import com.google.common.collect.ImmutableList
 import net.fabricmc.loader.api.FabricLoader
@@ -111,6 +112,8 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 		for(list in currentItems)
 			for(stack in list)
 			{
+				if(stack.isEmpty)
+					continue
 				if(!player.giveItemStack(stack))
 					world?.spawnEntity(ItemEntity(world, player.pos.x, player.pos.y, player.pos.z, stack))
 			}
@@ -126,6 +129,8 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 		world?.playSound(null, player.blockPos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, 1.0f)
 
 		canRemove = true
+
+		DeathStateSL.getPlayerState(player).lastTombPosition = null
 
 		return true
 	}

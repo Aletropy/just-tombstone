@@ -17,9 +17,17 @@ object ModItems
 	val GOLDEN_CROSS = register(
 		GoldenCrossItem(FabricItemSettings()
 			.maxCount(1)
-			.rarity(Rarity.RARE)
+			.rarity(Rarity.UNCOMMON)
 			.fireproof()
 		), "golden_cross"
+	)
+
+	val CREATIVE_CROSS = register(
+		CreativeCrossItem(FabricItemSettings()
+			.maxCount(1)
+			.rarity(Rarity.EPIC)
+			.fireproof()
+		), "creative_cross"
 	)
 
 	private fun register(item : Item, name : String) : Item
@@ -33,6 +41,10 @@ object ModItems
 		logger.info("Registering item groups")
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register {
 			it.addAfter(Items.TOTEM_OF_UNDYING, GOLDEN_CROSS)
+		}
+
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.OPERATOR).register {
+			it.add(CREATIVE_CROSS)
 		}
 	}
 
