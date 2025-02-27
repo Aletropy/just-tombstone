@@ -1,28 +1,29 @@
 package com.aletropy.tombstone
 
 import com.aletropy.tombstone.block.ModBlocks
-import com.aletropy.tombstone.block.TombstoneBlock
 import com.aletropy.tombstone.block.entity.ModBlockEntities
 import net.minecraft.block.Block
-import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.GlobalPos
+import net.minecraft.world.GameRules
 import net.minecraft.world.World
-import net.minecraft.world.tick.TickPriority
 import kotlin.jvm.optionals.getOrNull
 import kotlin.math.abs
 
 object TombstoneEvents
 {
+	private const val RADIUS = 16
+
 	fun playerDie(damageSource: DamageSource, player: PlayerEntity)
 	{
 		val world = player.world
 
-		if (world.isClient || player.isSpectator) return
+		if(world.isClient || player.isSpectator) return
+		if(world.gameRules.getBoolean(GameRules.KEEP_INVENTORY)) return
 
 		val server = (world as? ServerWorld)?.server ?: return
 
@@ -47,7 +48,7 @@ object TombstoneEvents
 
 	private fun getVoidAndCreate(player: PlayerEntity): BlockPos
 	{
-		val pos = BlockPos(player.blockX, player.world.bottomY+5, player.blockZ)
+		val pos = BlockPos(player.blockX, player.world.bottomY+10, player.blockZ)
 		generatePlatform(player, pos)
 		return pos
 	}
@@ -55,10 +56,25 @@ object TombstoneEvents
 	private fun getSafeOrCreate(player : PlayerEntity) : BlockPos
 	{
 		var safePos = getSafePosition(player)
+
 		if(safePos != null) return safePos
 
-		safePos = player.blockPos
-		generatePlatform(player, safePos)
+		val pos = player.blockPos
+
+		for(y in pos.y..player.world.topY)
+		{
+			if (!player.world.getBlockState(
+					BlockPos(
+						pos.x, y, pos.z
+					)
+				).isAir
+			) continue
+
+			safePos = pos.withY(y)
+			break
+		}
+
+		generatePlatform(player, safePos!!)
 
 		return safePos
 	}
@@ -77,10 +93,49 @@ object TombstoneEvents
 						-1 -> Blocks.STONE.defaultState
 						else -> Blocks.AIR.defaultState
 					}
-					player.world.setBlockState(currentPos, block, Block.NOTIFY_ALL)
+					if(dy != -1 || !player.world.getBlockState(currentPos).isSolid)
+						player.world.setBlockState(currentPos, block, Block.NOTIFY_ALL)
 				}
 			}
 		}
+	}
+
+	private fun getSafePositionFromLiquid(world : World, startPos : BlockPos) : BlockPos?
+	{
+		for(r in 1..RADIUS)
+		{
+			for(dx in -r..r)
+			{
+				for(dz in -r..r)
+				{
+					if(abs(dx) != r && abs(dz) != r) continue
+
+					val basePos = BlockPos(
+						startPos.x + dx,
+						startPos.y,
+						startPos.z + dz,
+					)
+
+					var safeY : Int? = null
+
+					for(dy in startPos.y..world.topY)
+					{
+						if(world.getBlockState(BlockPos(basePos.withY(dy))).isAir)
+						{
+							safeY = dy
+							break
+						}
+					}
+
+					if(safeY == null) continue
+
+					val candidatePos = basePos.withY(safeY)
+					if(isValidLocation(candidatePos, world)) return candidatePos
+				}
+			}
+		}
+
+		return null
 	}
 
 	private fun getSafePosition(player : PlayerEntity) : BlockPos?
@@ -89,35 +144,34 @@ object TombstoneEvents
 		val startPos = player.blockPos
 
 		if(isValidLocation(startPos, world)) return startPos
+		val currentState = world.getBlockState(startPos)
+		if(currentState.isLiquid) return getSafePositionFromLiquid(world, startPos)
 
-		val radius = 16
-
-		for(r in 1..radius)
+		// Spiral Search
+		for(r in 1..RADIUS)
 		{
 			for(dx in -r..r)
 			{
 				for(dz in -r..r)
 				{
+					// Check if is in the border of spiral
 					if(abs(dx) != r && abs(dz) != r) continue
 
 					val basePos = BlockPos(startPos.x + dx,startPos.y + dz,startPos.z + dz)
 
-					var maxHeight = startPos.y
+					val maxHeight = world.topY
 					val minHeight = world.bottomY
-					for(dy in maxHeight downTo minHeight)
-					{
-						val candidatePos = basePos.add(0, dy, 0)
-						if(isValidLocation(candidatePos, world)) {
-							return candidatePos
-						}
+
+					// Check for blocks above first
+					for(y in startPos.y..maxHeight) {
+						val pos = basePos.withY(y)
+						if(isValidLocation(pos, world)) return pos
 					}
-					maxHeight += radius
-					for(dy in maxHeight downTo minHeight)
-					{
-						val candidatePos = basePos.add(0, dy, 0)
-						if(isValidLocation(candidatePos, world)) {
-							return candidatePos
-						}
+
+					// Check for blocks below
+					for(y in startPos.y downTo minHeight) {
+						val pos = basePos.withY(y)
+						if(isValidLocation(pos, world)) return pos
 					}
 				}
 			}

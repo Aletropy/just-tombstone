@@ -1,6 +1,6 @@
 package com.aletropy.tombstone.item
 
-import com.aletropy.tombstone.JustTombstone
+import com.aletropy.tombstone.JustTombstoneMain
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
 import net.minecraft.item.Item
@@ -32,7 +32,7 @@ object ModItems
 
 	private fun register(item : Item, name : String) : Item
 	{
-		val id = Identifier(JustTombstone.MOD_ID, name)
+		val id = Identifier(JustTombstoneMain.MOD_ID, name)
 		return Registry.register(Registries.ITEM, id, item)
 	}
 
@@ -54,5 +54,5 @@ object ModItems
 		registerItemGroups()
 	}
 
-	private val logger = LoggerFactory.getLogger(JustTombstone.MOD_ID)
+	private val logger = LoggerFactory.getLogger(JustTombstoneMain.MOD_ID)
 }

@@ -1,6 +1,6 @@
 package com.aletropy.tombstone.block.entity
 
-import com.aletropy.tombstone.JustTombstone
+import com.aletropy.tombstone.JustTombstoneMain
 import com.aletropy.tombstone.block.ModBlocks
 import net.fabricmc.fabric.api.`object`.builder.v1.block.entity.FabricBlockEntityTypeBuilder
 import net.minecraft.block.entity.BlockEntity
@@ -22,7 +22,7 @@ object ModBlockEntities
 
 	private fun <T : BlockEntity> register(blockEntityType : BlockEntityType<T>, name : String) : BlockEntityType<T>
 	{
-		val id = Identifier(JustTombstone.MOD_ID, name)
+		val id = Identifier(JustTombstoneMain.MOD_ID, name)
 
 		return Registry.register(Registries.BLOCK_ENTITY_TYPE, id, blockEntityType)
 	}
@@ -30,7 +30,7 @@ object ModBlockEntities
 	fun registerBlockEntities()
 	{
 		LoggerFactory.getLogger(
-			JustTombstone.MOD_ID
+			JustTombstoneMain.MOD_ID
 		).info("Registering Block Entities")
 	}
 }

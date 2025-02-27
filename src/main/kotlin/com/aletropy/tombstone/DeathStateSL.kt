@@ -4,14 +4,12 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryKeys
-import net.minecraft.registry.RegistryWrapper.WrapperLookup
 import net.minecraft.server.MinecraftServer
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.GlobalPos
 import net.minecraft.world.PersistentState
 import net.minecraft.world.World
-import java.lang.reflect.Type
 import java.util.*
 import java.util.function.Consumer
 
@@ -92,7 +90,7 @@ class DeathStateSL : PersistentState()
 			val persistentStateManager = server.getWorld(World.OVERWORLD)!!.persistentStateManager
 
 			val state = persistentStateManager.getOrCreate(
-				{ createFromNbt(it) }, { createNew() }, JustTombstone.MOD_ID)
+				{ createFromNbt(it) }, { createNew() }, JustTombstoneMain.MOD_ID)
 
 			state.markDirty()
 

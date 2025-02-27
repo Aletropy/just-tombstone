@@ -1,6 +1,7 @@
 package com.aletropy.tombstone.item
 
 import com.aletropy.tombstone.DeathStateSL
+import com.aletropy.tombstone.ModGameRules
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item
@@ -17,11 +18,11 @@ open class GoldenCrossItem(settings: Settings) : Item(settings)
 {
 	override fun finishUsing(stack: ItemStack, world: World, user: LivingEntity): ItemStack
 	{
-		if (world.isClient) return super.finishUsing(stack, world, user)
-		if (user !is PlayerEntity) return super.finishUsing(stack, world, user)
+		if (world.isClient) return stack
+		if (user !is PlayerEntity) return stack
 
 		val deathState = DeathStateSL.getPlayerState(user)
-		val lastDeathPos = deathState.lastTombPosition ?: return super.finishUsing(stack, world, user)
+		val lastDeathPos = deathState.lastTombPosition ?: return stack
 		val baseLastDeathPos = lastDeathPos.pos
 
 		val targetPos = baseLastDeathPos.toCenterPos().add(0.0, 0.5, 0.0)
@@ -31,7 +32,8 @@ open class GoldenCrossItem(settings: Settings) : Item(settings)
 		dimension.chunkManager.setChunkForced(dimension.getChunk(baseLastDeathPos).pos, true)
 		user.teleport(dimension, targetPos.x, targetPos.y, targetPos.z, EnumSet.noneOf(PositionFlag::class.java), user.yaw, user.pitch)
 
-		return ItemStack.EMPTY
+		return if(world.gameRules.get(ModGameRules.CROSS_CONSUME_ON_USE).get())
+			ItemStack.EMPTY else stack
 	}
 
 	override fun use(world: World, user: PlayerEntity, hand: Hand): TypedActionResult<ItemStack>

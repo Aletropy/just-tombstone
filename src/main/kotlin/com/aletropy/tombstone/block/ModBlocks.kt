@@ -1,13 +1,11 @@
 package com.aletropy.tombstone.block
 
-import com.aletropy.tombstone.JustTombstone
+import com.aletropy.tombstone.JustTombstoneMain
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.AbstractBlock
-import net.minecraft.block.AbstractBlock.ContextPredicate
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import net.minecraft.item.BlockItem
-import net.minecraft.item.Item
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.sound.BlockSoundGroup
@@ -33,7 +31,7 @@ object ModBlocks
 	private fun register(block : Block, name : String, shouldCreateItem : Boolean) : Block
 	{
 		val id = Identifier(
-			JustTombstone.MOD_ID, name
+			JustTombstoneMain.MOD_ID, name
 		)
 
 		if(shouldCreateItem) {
@@ -46,6 +44,6 @@ object ModBlocks
 
 	fun registerBlocks()
 	{
-		LoggerFactory.getLogger(JustTombstone.MOD_ID).info("Registering Blocks")
+		LoggerFactory.getLogger(JustTombstoneMain.MOD_ID).info("Registering Blocks")
 	}
 }

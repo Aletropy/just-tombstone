@@ -5,9 +5,9 @@ import com.aletropy.tombstone.support.trinkets.TrinketsHelper
 import com.google.common.collect.ImmutableList
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.block.BlockState
+import net.minecraft.block.entity.BeaconBlockEntity
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.ItemEntity
-import net.minecraft.entity.mob.MobEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
 import net.minecraft.item.ItemStack
@@ -15,11 +15,8 @@ import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtList
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
-import net.minecraft.util.TypeFilter
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Box
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
@@ -30,7 +27,6 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 	{
 		fun tick(world: World, pos: BlockPos, state: BlockState, blockEntity: TombstoneBlockEntity)
 		{
-
 		}
 	}
 

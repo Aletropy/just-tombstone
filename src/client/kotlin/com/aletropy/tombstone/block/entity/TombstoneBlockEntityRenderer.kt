@@ -1,8 +1,11 @@
 package com.aletropy.tombstone.block.entity
 
+import com.aletropy.tombstone.item.ModItems
+import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.Tessellator
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.render.block.entity.BlockEntityRenderer
@@ -24,20 +27,20 @@ class TombstoneBlockEntityRenderer : BlockEntityRenderer<TombstoneBlockEntity> {
 	) {
 		matrices.push()
 
-		// Posiciona o texto no centro do bloco e acima dele
-		matrices.translate(0.5, 0.16, 0.18) // Ajuste Y para altura desejada
+		val player = MinecraftClient.getInstance().player
+		val isHoldingAnCross = player != null && player.mainHandStack.item == ModItems.GOLDEN_CROSS
+
+		matrices.translate(0.5, 0.16, 0.18)
 
 		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90.0f))
 
 		val textRenderer = MinecraftClient.getInstance().textRenderer
 		val text = Text.of(entity.owner)
-		val scale = 0.006f // Adjust the text size
+		val scale = 0.006f
 
-		// Centraliza o texto
 		val textWidth = textRenderer.getWidth(text) * scale / 2
 		matrices.translate(-textWidth.toDouble(), 0.0, 0.0)
 
-		// Renderiza o texto em duas passagens (frente e verso)
 		matrices.scale(scale, -scale, scale)
 		renderText(text, textRenderer, matrices, vertexConsumers, light, true) // Frente
 		matrices.scale(1f, 1f, -1f) // Inverte Z para renderizar atrás
