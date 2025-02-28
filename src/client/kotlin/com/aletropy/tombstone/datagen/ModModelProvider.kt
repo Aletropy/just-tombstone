@@ -12,9 +12,7 @@ class ModModelProvider(output : FabricDataOutput) : FabricModelProvider(output)
 {
 	override fun generateBlockStateModels(blockStateModelGenerator: BlockStateModelGenerator)
 	{
-		blockStateModelGenerator.registerSimpleState(
-			ModBlocks.TOMBSTONE
-		)
+		blockStateModelGenerator.registerNorthDefaultHorizontalRotation(ModBlocks.TOMBSTONE)
 	}
 
 	override fun generateItemModels(itemModelGenerator: ItemModelGenerator)

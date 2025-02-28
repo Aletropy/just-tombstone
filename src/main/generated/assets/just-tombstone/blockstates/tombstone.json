@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "just-tombstone:block/tombstone",
+      "y": 90
+    },
+    "facing=north": {
       "model": "just-tombstone:block/tombstone"
+    },
+    "facing=south": {
+      "model": "just-tombstone:block/tombstone",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "just-tombstone:block/tombstone",
+      "y": 270
     }
   }
 }

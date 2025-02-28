@@ -1,5 +1,6 @@
-package com.aletropy.tombstone
+package com.aletropy.tombstone.data
 
+import com.aletropy.tombstone.JustTombstoneMain
 import net.minecraft.entity.LivingEntity
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.registry.RegistryKey
@@ -12,7 +13,6 @@ import net.minecraft.world.PersistentState
 import net.minecraft.world.World
 import java.util.*
 import java.util.function.Consumer
-
 
 class DeathState
 {
@@ -90,7 +90,8 @@ class DeathStateSL : PersistentState()
 			val persistentStateManager = server.getWorld(World.OVERWORLD)!!.persistentStateManager
 
 			val state = persistentStateManager.getOrCreate(
-				{ createFromNbt(it) }, { createNew() }, JustTombstoneMain.MOD_ID)
+				{ createFromNbt(it) }, { createNew() }, JustTombstoneMain.MOD_ID
+			)
 
 			state.markDirty()
 

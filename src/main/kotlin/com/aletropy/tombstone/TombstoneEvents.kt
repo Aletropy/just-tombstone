@@ -2,6 +2,7 @@ package com.aletropy.tombstone
 
 import com.aletropy.tombstone.block.ModBlocks
 import com.aletropy.tombstone.block.entity.ModBlockEntities
+import com.aletropy.tombstone.data.DeathStateSL
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import net.minecraft.entity.damage.DamageSource

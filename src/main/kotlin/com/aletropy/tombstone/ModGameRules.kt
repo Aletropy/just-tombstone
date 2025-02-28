@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 
 object ModGameRules
 {
-	val CROSS_CONSUME_ON_USE = GameRuleRegistry.register(
+	val CROSS_CONSUME_ON_USE: GameRules.Key<GameRules.BooleanRule> = GameRuleRegistry.register(
 		"crossConsumeOnUse", GameRules.Category.PLAYER, GameRuleFactory.createBooleanRule(true)
 	)
 

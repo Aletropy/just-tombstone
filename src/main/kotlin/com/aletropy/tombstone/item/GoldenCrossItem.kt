@@ -1,6 +1,6 @@
 package com.aletropy.tombstone.item
 
-import com.aletropy.tombstone.DeathStateSL
+import com.aletropy.tombstone.data.DeathStateSL
 import com.aletropy.tombstone.ModGameRules
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity

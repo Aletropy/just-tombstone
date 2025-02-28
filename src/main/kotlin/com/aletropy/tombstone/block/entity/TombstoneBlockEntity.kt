@@ -1,11 +1,10 @@
 package com.aletropy.tombstone.block.entity
 
-import com.aletropy.tombstone.DeathStateSL
+import com.aletropy.tombstone.data.DeathStateSL
 import com.aletropy.tombstone.support.trinkets.TrinketsHelper
 import com.google.common.collect.ImmutableList
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.block.BlockState
-import net.minecraft.block.entity.BeaconBlockEntity
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.ItemEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -17,19 +16,11 @@ import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
 
 class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 	ModBlockEntities.TOMBSTONE, pos, state
 )
 {
-	companion object
-	{
-		fun tick(world: World, pos: BlockPos, state: BlockState, blockEntity: TombstoneBlockEntity)
-		{
-		}
-	}
-
 	var owner = ""
 	private var canRemove = false
 	private var main = DefaultedList.ofSize(36, ItemStack.EMPTY)
@@ -41,7 +32,7 @@ class TombstoneBlockEntity(pos : BlockPos, state : BlockState) : BlockEntity(
 	private var experienceProgress = 0.0f
 	private var experienceLevel = 0
 
-	fun canBeRemoved(): Boolean { return canRemove }
+	fun canBeRemoved(): Boolean { return canRemove || owner.isEmpty() || owner == "" }
 
 	fun initialize(player : PlayerEntity)
 	{
